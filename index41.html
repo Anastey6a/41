@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <style>
+        .done {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body>
+    <h1>Todo List</h1>
+    <ul id="todo-list"></ul>
+
+    <form id="todo-form">
+        <input type="text" id="new-todo" placeholder="New todo" required>
+        <button type="submit">Add Todo</button>
+    </form>
+
+    <script>
+        const todoList = document.getElementById('todo-list');
+        const todoForm = document.getElementById('todo-form');
+        const newTodoInput = document.getElementById('new-todo');
+        
+        const todos = [];
+
+        function renderTodos() {
+            todoList.innerHTML = '';
+            todos.forEach((todo, index) => {
+                const li = document.createElement('li');
+                li.innerText = todo.text;
+                li.classList.toggle('done', todo.done);
+                li.onclick = () => toggleTodoDone(index);
+                todoList.appendChild(li);
+            });
+        }
+
+        function toggleTodoDone(index) {
+            todos[index].done = !todos[index].done;
+            renderTodos();
+        }
+
+        todoForm.onsubmit = (e) => {
+            e.preventDefault();
+            const newTodoText = newTodoInput.value.trim();
+            if (newTodoText !== '') {
+                todos.push({ text: newTodoText, done: false });
+                newTodoInput.value = '';
+                renderTodos();
+            }
+        };
+
+        renderTodos();
+    </script>
+</body>
+</html>
